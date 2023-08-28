@@ -10,7 +10,7 @@
         <relativePath/> <!--used to load parent pom from an external project - springboot library-->
     </parent>
 
-    <groupId>org.multi.module</groupId>
+    <groupId>com.multi.module</groupId>
     <artifactId>multi-module-mvn</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging> <!--pom packaging creates a container for submodules with jar packaging-->
