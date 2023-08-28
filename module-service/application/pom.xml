@@ -8,5 +8,13 @@
     </parent>
 
     <artifactId>application</artifactId>
+    <description>Passes client request to domain application service</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.multi.module</groupId>
+            <artifactId>application-service</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
