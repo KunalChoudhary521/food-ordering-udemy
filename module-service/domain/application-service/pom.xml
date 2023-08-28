@@ -10,4 +10,11 @@
     <artifactId>application-service</artifactId>
     <description>This project includes DDD Application Services</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.multi.module</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
