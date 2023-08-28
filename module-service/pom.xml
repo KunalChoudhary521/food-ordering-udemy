@@ -10,7 +10,15 @@
 
 	<groupId>com.multi.module</groupId>
 	<artifactId>module-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>module-service</name>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>domain</module>
+		<module>application</module>
+		<module>data-access</module>
+		<module>messaging</module>
+		<module>container</module>
+	</modules>
 
 </project>
