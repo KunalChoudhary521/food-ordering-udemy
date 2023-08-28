@@ -8,5 +8,30 @@
     </parent>
 
     <artifactId>container</artifactId>
+    <description>Contains a single runnable Spring boot container</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.multi.module</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.multi.module</groupId>
+            <artifactId>application-service</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.multi.module</groupId>
+            <artifactId>application</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.multi.module</groupId>
+            <artifactId>data-access</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.multi.module</groupId>
+            <artifactId>messaging</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
