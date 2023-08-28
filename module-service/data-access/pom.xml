@@ -9,4 +9,11 @@
 
     <artifactId>data-access</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.multi.module</groupId>
+            <artifactId>application-service</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
