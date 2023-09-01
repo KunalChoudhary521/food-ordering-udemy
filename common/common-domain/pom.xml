@@ -10,4 +10,11 @@
     <artifactId>common-domain</artifactId>
     <description>This project is the "Shared-Kernel" in DDD terms</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
