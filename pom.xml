@@ -10,8 +10,8 @@
         <relativePath/> <!--used to load parent pom from an external project - springboot library-->
     </parent>
 
-    <groupId>com.multi.module</groupId>
-    <artifactId>multi-module-mvn</artifactId>
+    <groupId>com.food.ordering</groupId>
+    <artifactId>food-ordering</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging> <!--pom packaging creates a container for submodules with jar packaging-->
 
@@ -24,28 +24,28 @@
     <dependencyManagement> <!--Unifies the versions for dependencies in the child modules-->
         <dependencies>
             <dependency>
-                <groupId>com.multi.module</groupId>
+                <groupId>com.food.ordering</groupId>
                 <artifactId>core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.multi.module</groupId>
+                <groupId>com.food.ordering</groupId>
                 <artifactId>application-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.multi.module</groupId>
+                <groupId>com.food.ordering</groupId>
                 <artifactId>application</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.multi.module</groupId>
+                <groupId>com.food.ordering</groupId>
                 <artifactId>data-access</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.multi.module</groupId>
+                <groupId>com.food.ordering</groupId>
                 <artifactId>messaging</artifactId>
                 <version>${project.version}</version>
             </dependency>
