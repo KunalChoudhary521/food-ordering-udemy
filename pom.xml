@@ -27,6 +27,10 @@
         <lombok.version>1.18.28</lombok.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <spring-kafka.version>3.0.11</spring-kafka.version>
+        <kafka-avro-serializer.version>7.4.0</kafka-avro-serializer.version>
+        <avro.version>1.11.0</avro.version>
+        <snakeyaml.version>2.1</snakeyaml.version><!--vulnerability free version-->
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -64,10 +68,37 @@
                 <artifactId>common-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.food.ordering</groupId>
+                <artifactId>config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering</groupId>
+                <artifactId>consumer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering</groupId>
+                <artifactId>model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering</groupId>
+                <artifactId>producer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
