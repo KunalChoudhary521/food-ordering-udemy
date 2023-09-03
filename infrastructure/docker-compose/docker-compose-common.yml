@@ -1,0 +1,5 @@
+version: '3.7'
+
+networks:
+  food-ordering: # must be named the same as GLOBAL_NETWORK variable
+    driver: bridge
