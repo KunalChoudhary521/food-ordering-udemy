@@ -11,7 +11,7 @@ import com.food.ordering.order.domain.entity.Restaurant;
 import com.food.ordering.order.domain.event.OrderCreatedEvent;
 import com.food.ordering.order.domain.exception.OrderDomainException;
 import com.food.ordering.order.domain.exception.OrderNotFoundException;
-import com.food.ordering.order.domain.mapper.OrderDataMapper;
+import com.food.ordering.order.domain.mapper.OrderMapper;
 import com.food.ordering.order.domain.port.output.repository.CustomerRepository;
 import com.food.ordering.order.domain.port.output.repository.OrderRepository;
 import com.food.ordering.order.domain.port.output.repository.RestaurantRepository;
@@ -35,7 +35,7 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final RestaurantRepository restaurantRepository;
-    private final OrderDataMapper orderDataMapper;
+    private final OrderMapper orderMapper;
     private final ApplicationDomainEventPublisher applicationDomainEventPublisher;
 
     @Transactional
@@ -43,19 +43,19 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
     public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
         checkCustomer(createOrderCommand.getCustomerId());
         Restaurant restaurant = checkRestaurant(createOrderCommand.getRestaurantId());
-        Order order = orderDataMapper.createOrderCommandToOrder(createOrderCommand);
+        Order order = orderMapper.createOrderCommandToOrder(createOrderCommand);
         OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitOrder(order, restaurant);
         Order savedOrder = saveOrder(order);
         log.info("Order is saved with id: {}", savedOrder.getId());
         applicationDomainEventPublisher.publish(orderCreatedEvent);
-        return orderDataMapper.orderToCreateOrderResponse(savedOrder, "Order created successfully");
+        return orderMapper.orderToCreateOrderResponse(savedOrder, "Order created successfully");
     }
 
     @Transactional(readOnly = true)
     @Override
     public TrackOrderResponse trackOrder(TrackOrderQuery trackOrderQuery) {
         return orderRepository.findByTrackingId(new TrackingId(trackOrderQuery.getTrackingId()))
-                .map(orderDataMapper::orderToTrackOrderResponse)
+                .map(orderMapper::orderToTrackOrderResponse)
                 .orElseThrow(() -> {
                     String errorMessage = String.format("Order not found with tracking id: %s", trackOrderQuery.getTrackingId());
                     log.warn(errorMessage);
