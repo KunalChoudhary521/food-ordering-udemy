@@ -42,7 +42,7 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
     @Override
     public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
         checkCustomer(createOrderCommand.getCustomerId());
-        Restaurant restaurant = checkRestaurant(createOrderCommand.getRestaurantId());
+        Restaurant restaurant = checkRestaurant(createOrderCommand);
         Order order = orderMapper.createOrderCommandToOrder(createOrderCommand);
         OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitOrder(order, restaurant);
         Order savedOrder = saveOrder(order);
@@ -72,10 +72,11 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
                 });
     }
 
-    private Restaurant checkRestaurant(UUID restaurantId) {
-        return restaurantRepository.findRestaurant(restaurantId)
+    private Restaurant checkRestaurant(CreateOrderCommand createOrderCommand) {
+        Restaurant restaurant = orderMapper.createOrderCommandToRestaurant(createOrderCommand);
+        return restaurantRepository.findRestaurant(restaurant)
                 .orElseThrow(() -> {
-                    String errorMessage = String.format("Order not created. Restaurant with id: %s not found", restaurantId);
+                    String errorMessage = String.format("Order not created. Restaurant with id: %s not found", restaurant.getId());
                     log.warn(errorMessage);
                     throw new OrderDomainException(errorMessage);
                 });
