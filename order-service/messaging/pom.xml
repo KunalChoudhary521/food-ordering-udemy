@@ -14,5 +14,21 @@
             <groupId>com.food.ordering</groupId>
             <artifactId>application-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.food.ordering</groupId>
+            <artifactId>producer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.ordering</groupId>
+            <artifactId>consumer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.ordering</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
     </dependencies>
 </project>
