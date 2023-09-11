@@ -19,6 +19,7 @@
         <module>common</module>
         <module>order-service</module>
         <module>infrastructure</module>
+        <module>payment-service</module>
     </modules>
 
     <properties>
@@ -37,6 +38,7 @@
 
     <dependencyManagement> <!--Unifies the versions for dependencies in the child modules-->
         <dependencies>
+            <!-- order-service -->
             <dependency>
                 <groupId>com.food.ordering</groupId>
                 <artifactId>core</artifactId>
@@ -47,7 +49,6 @@
                 <artifactId>application-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.food.ordering</groupId>
                 <artifactId>application</artifactId>
@@ -63,6 +64,30 @@
                 <artifactId>messaging</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <!-- payment-service -->
+            <dependency>
+                <groupId>com.food.ordering</groupId>
+                <artifactId>payment-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering</groupId>
+                <artifactId>payment-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering</groupId>
+                <artifactId>payment-data-access</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering</groupId>
+                <artifactId>payment-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- common -->
             <dependency>
                 <groupId>com.food.ordering</groupId>
                 <artifactId>common-domain</artifactId>
@@ -74,6 +99,7 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <!-- infrastructure -->
             <dependency>
                 <groupId>com.food.ordering</groupId>
                 <artifactId>config</artifactId>
@@ -95,6 +121,7 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <!-- external-dependencies -->
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
