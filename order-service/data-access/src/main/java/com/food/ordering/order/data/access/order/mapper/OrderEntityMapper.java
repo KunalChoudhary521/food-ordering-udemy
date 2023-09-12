@@ -6,7 +6,7 @@ import com.food.ordering.order.data.access.order.entity.OrderItemEntity;
 import com.food.ordering.order.domain.entity.Order;
 import com.food.ordering.order.domain.entity.OrderItem;
 import com.food.ordering.order.domain.mapper.BaseIdMapper;
-import com.food.ordering.order.domain.mapper.MoneyMapper;
+import com.food.ordering.domain.mapper.MoneyMapper;
 import com.food.ordering.order.domain.valueobject.StreetAddress;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -15,7 +15,9 @@ import org.mapstruct.Mapping;
 import java.util.Arrays;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
+@Mapper(componentModel = SPRING)
 public interface OrderEntityMapper extends MoneyMapper, BaseIdMapper {
 
     String FAILURE_MESSAGE_DELIMITER = ",";
