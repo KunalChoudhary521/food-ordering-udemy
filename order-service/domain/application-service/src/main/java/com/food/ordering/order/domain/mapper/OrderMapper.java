@@ -1,5 +1,6 @@
 package com.food.ordering.order.domain.mapper;
 
+import com.food.ordering.domain.mapper.MoneyMapper;
 import com.food.ordering.order.domain.dto.create.CreateOrderCommand;
 import com.food.ordering.order.domain.dto.create.CreateOrderResponse;
 import com.food.ordering.order.domain.dto.create.OrderAddress;
@@ -13,7 +14,9 @@ import com.food.ordering.order.domain.valueobject.StreetAddress;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
+@Mapper(componentModel = SPRING)
 public interface OrderMapper extends MoneyMapper, BaseIdMapper {
 
     @Mapping(target = "deliveryAddress", source = "createOrderCommand.orderAddress")
