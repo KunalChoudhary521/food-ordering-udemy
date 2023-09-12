@@ -9,7 +9,7 @@ import com.food.ordering.order.domain.entity.OrderItem;
 import com.food.ordering.order.domain.event.OrderCancelledEvent;
 import com.food.ordering.order.domain.event.OrderCreatedEvent;
 import com.food.ordering.order.domain.event.OrderPaidEvent;
-import com.food.ordering.order.domain.mapper.MoneyMapper;
+import com.food.ordering.domain.mapper.MoneyMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
