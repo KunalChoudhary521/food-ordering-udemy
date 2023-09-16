@@ -1,6 +1,7 @@
 package com.food.ordering.order.messaging.publisher.kafka;
 
 import com.food.ordering.kafka.order.model.PaymentRequest;
+import com.food.ordering.kafka.producer.KafkaMessagePublisher;
 import com.food.ordering.kafka.producer.service.KafkaProducer;
 import com.food.ordering.order.domain.config.OrderServiceConfig;
 import com.food.ordering.order.domain.event.OrderCancelledEvent;
@@ -18,7 +19,7 @@ public class CancelOrderKafkaPublisher implements OrderCancelledPaymentRequestPu
     private final OrderMessagingMapper orderMessagingMapper;
     private final OrderServiceConfig orderServiceConfig;
     private final KafkaProducer<String, PaymentRequest> kafkaProducer;
-    private final OrderKafkaMessagePublisher orderKafkaMessagePublisher;
+    private final KafkaMessagePublisher kafkaMessagePublisher;
 
     @Override
     public void publish(OrderCancelledEvent domainEvent) {
@@ -30,7 +31,7 @@ public class CancelOrderKafkaPublisher implements OrderCancelledPaymentRequestPu
 
              String topic = orderServiceConfig.getPaymentRequestTopic();
              kafkaProducer.send(topic, orderId, paymentRequest,
-                    orderKafkaMessagePublisher.getKafkaCallback(topic, paymentRequest, orderId,
+                    kafkaMessagePublisher.getKafkaCallback(topic, paymentRequest, orderId,
                             paymentRequest.getClass().getSimpleName()));
         } catch (Exception ex) {
              log.error("Failed to send PaymentRequest message with order id {}, error {}", orderId, ex);
