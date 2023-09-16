@@ -8,5 +8,31 @@
     </parent>
 
     <artifactId>payment-container</artifactId>
+    <description>Contains a single runnable Spring boot container</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.food.ordering</groupId>
+            <artifactId>payment-domain-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.ordering</groupId>
+            <artifactId>payment-application-service</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.food.ordering</groupId>
+            <artifactId>payment-data-access</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.ordering</groupId>
+            <artifactId>payment-messaging</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
