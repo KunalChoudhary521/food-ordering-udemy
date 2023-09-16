@@ -42,7 +42,7 @@ class OrderMessagingMapperTest {
     private static final ProductId TEST_PRODUCT_ID_2 = new ProductId(UUID.fromString("15b429e7-ed12-4d41-b739-1348bab05d50"));
     private static final UUID TEST_COMPLETED_PAYMENT_ID = UUID.fromString("96eb41ab-b4c7-4713-9394-34e3b031df60");
     private static final UUID TEST_PAYMENT_RESPONSE_EVENT_ID = UUID.fromString("bcb4a9ad-3590-4443-926b-49761ce34593");
-    private static final UUID TEST_RESTAURTANT_APPROVAL_RESPONSE_EVENT_ID = UUID.fromString("0fe1b3cf-20a3-458b-b2b7-17ef52fdca25");
+    private static final UUID TEST_RESTAURANT_APPROVAL_RESPONSE_EVENT_ID = UUID.fromString("0fe1b3cf-20a3-458b-b2b7-17ef52fdca25");
     public static final Money TEST_PRICE = new Money(new BigDecimal("17.49"));
     private static final ZoneId UTC = ZoneId.of("UTC");
     private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 11, 5, 8, 45, 21, 0, UTC);
@@ -50,11 +50,11 @@ class OrderMessagingMapperTest {
     private final OrderMessagingMapper orderMessagingMapper = Mappers.getMapper(OrderMessagingMapper.class);
 
     @Test
-    void orderCreatedEvent_orderCreatedEventToPaymentRequest_paymentRequest() {
-        Order order = createTestOrder();
+    void orderCreatedEvent_orderEventToPaymentRequest_paymentRequest() {
+        Order order = createTestOrder(OrderStatus.PENDING);
         OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(order, TEST_ZONE_DATE_TIME);
 
-        PaymentRequest paymentRequest = orderMessagingMapper.orderCreatedEventToPaymentRequest(orderCreatedEvent);
+        PaymentRequest paymentRequest = orderMessagingMapper.orderEventToPaymentRequest(orderCreatedEvent);
 
         assertNotNull(paymentRequest.getId());
         assertTrue(paymentRequest.getSagaId().isEmpty());
@@ -66,11 +66,11 @@ class OrderMessagingMapperTest {
     }
 
     @Test
-    void orderCancelledEvent_orderCancelledEventToPaymentRequest_paymentRequest() {
-        Order order = createTestOrder();
+    void orderCancelledEvent_orderEventToPaymentRequest_paymentRequest() {
+        Order order = createTestOrder(OrderStatus.CANCELLED);
         OrderCancelledEvent orderCancelledEvent = new OrderCancelledEvent(order, TEST_ZONE_DATE_TIME);
 
-        PaymentRequest paymentRequest = orderMessagingMapper.orderCancelledEventToPaymentRequest(orderCancelledEvent);
+        PaymentRequest paymentRequest = orderMessagingMapper.orderEventToPaymentRequest(orderCancelledEvent);
 
         assertNotNull(paymentRequest.getId());
         assertTrue(paymentRequest.getSagaId().isEmpty());
@@ -83,7 +83,7 @@ class OrderMessagingMapperTest {
 
     @Test
     void orderPaidEvent_orderPaidEventToRestaurantApprovalRequest_restaurantApprovalRequest() {
-        Order order = createTestOrder();
+        Order order = createTestOrder(OrderStatus.PAID);
         OrderPaidEvent orderPaidEvent = new OrderPaidEvent(order, TEST_ZONE_DATE_TIME);
 
         RestaurantApprovalRequest restaurantApprovalRequest = orderMessagingMapper.orderPaidEventToRestaurantApprovalRequest(orderPaidEvent);
@@ -136,7 +136,7 @@ class OrderMessagingMapperTest {
     void restaurantApprovalResponseAvroModel_restaurantApprovalResponseAvroModelToRestaurantApprovalResponse_restaurantApprovalResponse() {
         com.food.ordering.kafka.order.model.RestaurantApprovalResponse restaurantApprovalResponseAvroModel =
                 com.food.ordering.kafka.order.model.RestaurantApprovalResponse.newBuilder()
-                        .setId(TEST_RESTAURTANT_APPROVAL_RESPONSE_EVENT_ID.toString())
+                        .setId(TEST_RESTAURANT_APPROVAL_RESPONSE_EVENT_ID.toString())
                         .setSagaId("")
                         .setRestaurantId(TEST_RESTAURANT_ID.toString())
                         .setOrderId(TEST_ORDER_ID.toString())
@@ -157,7 +157,7 @@ class OrderMessagingMapperTest {
         assertThat(restaurantApprovalResponse.getFailureMessages()).containsAll(restaurantApprovalResponseAvroModel.getFailureMessages());
     }
 
-    private Order createTestOrder() {
+    private Order createTestOrder(OrderStatus orderStatus) {
         OrderItem item1 = OrderItem.builder()
                 .product(new Product(TEST_PRODUCT_ID_1, "p1", new Money(new BigDecimal("14.29"))))
                 .quantity(1)
@@ -173,7 +173,7 @@ class OrderMessagingMapperTest {
                 .restaurantId(TEST_RESTAURANT_ID)
                 .orderItems(List.of(item1, item2))
                 .price(TEST_PRICE)
-                .orderStatus(OrderStatus.PENDING)
+                .orderStatus(orderStatus)
                 .build();
     }
 }

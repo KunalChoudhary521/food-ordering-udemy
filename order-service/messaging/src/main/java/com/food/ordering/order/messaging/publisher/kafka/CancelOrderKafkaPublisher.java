@@ -26,7 +26,7 @@ public class CancelOrderKafkaPublisher implements OrderCancelledPaymentRequestPu
         log.info("Received OrderCancelledEvent for order id: {}", orderId);
 
          try {
-            PaymentRequest paymentRequest = orderMessagingMapper.orderCancelledEventToPaymentRequest(domainEvent);
+            PaymentRequest paymentRequest = orderMessagingMapper.orderEventToPaymentRequest(domainEvent);
 
              String topic = orderServiceConfig.getPaymentRequestTopic();
              kafkaProducer.send(topic, orderId, paymentRequest,
