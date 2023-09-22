@@ -1,7 +1,7 @@
 package com.food.ordering.order.data.access.restaurant.adapter;
 
+import com.food.ordering.common.data.access.restaurant.repository.RestaurantJpaRepository;
 import com.food.ordering.order.data.access.restaurant.mapper.RestaurantEntityMapper;
-import com.food.ordering.order.data.access.restaurant.respository.RestaurantJpaRepository;
 import com.food.ordering.order.domain.entity.Restaurant;
 import com.food.ordering.order.domain.port.output.repository.RestaurantRepository;
 import lombok.AllArgsConstructor;

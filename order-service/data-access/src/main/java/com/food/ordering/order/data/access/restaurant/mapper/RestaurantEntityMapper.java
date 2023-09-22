@@ -1,9 +1,9 @@
 package com.food.ordering.order.data.access.restaurant.mapper;
 
+import com.food.ordering.common.data.access.restaurant.entity.RestaurantEntity;
 import com.food.ordering.domain.valueobject.Money;
 import com.food.ordering.domain.valueobject.ProductId;
 import com.food.ordering.domain.valueobject.RestaurantId;
-import com.food.ordering.order.data.access.restaurant.entity.RestaurantEntity;
 import com.food.ordering.order.domain.entity.Product;
 import com.food.ordering.order.domain.entity.Restaurant;
 import org.springframework.stereotype.Component;
