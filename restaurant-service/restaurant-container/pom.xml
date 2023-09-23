@@ -8,4 +8,30 @@
    </parent>
 
    <artifactId>restaurant-container</artifactId>
+   <description>Contains a single runnable Spring boot container</description>
+
+   <dependencies>
+      <dependency>
+         <groupId>com.food.ordering</groupId>
+         <artifactId>restaurant-domain-core</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>com.food.ordering</groupId>
+         <artifactId>restaurant-application-service</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>com.food.ordering</groupId>
+         <artifactId>restaurant-data-access</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>com.food.ordering</groupId>
+         <artifactId>restaurant-messaging</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter</artifactId>
+      </dependency>
+   </dependencies>
 </project>
