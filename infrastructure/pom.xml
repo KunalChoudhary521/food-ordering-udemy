@@ -12,5 +12,6 @@
 
     <modules>
         <module>kafka</module>
+        <module>saga</module>
     </modules>
 </project>
