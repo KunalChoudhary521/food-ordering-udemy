@@ -52,7 +52,7 @@ class OrderMessagingMapperTest {
     @Test
     void orderCreatedEvent_orderEventToPaymentRequest_paymentRequest() {
         Order order = createTestOrder(OrderStatus.PENDING);
-        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(order, TEST_ZONE_DATE_TIME);
+        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(order, TEST_ZONE_DATE_TIME, null);
 
         PaymentRequest paymentRequest = orderMessagingMapper.orderEventToPaymentRequest(orderCreatedEvent);
 
@@ -68,7 +68,7 @@ class OrderMessagingMapperTest {
     @Test
     void orderCancelledEvent_orderEventToPaymentRequest_paymentRequest() {
         Order order = createTestOrder(OrderStatus.CANCELLED);
-        OrderCancelledEvent orderCancelledEvent = new OrderCancelledEvent(order, TEST_ZONE_DATE_TIME);
+        OrderCancelledEvent orderCancelledEvent = new OrderCancelledEvent(order, TEST_ZONE_DATE_TIME, null);
 
         PaymentRequest paymentRequest = orderMessagingMapper.orderEventToPaymentRequest(orderCancelledEvent);
 
@@ -84,7 +84,7 @@ class OrderMessagingMapperTest {
     @Test
     void orderPaidEvent_orderPaidEventToRestaurantApprovalRequest_restaurantApprovalRequest() {
         Order order = createTestOrder(OrderStatus.PAID);
-        OrderPaidEvent orderPaidEvent = new OrderPaidEvent(order, TEST_ZONE_DATE_TIME);
+        OrderPaidEvent orderPaidEvent = new OrderPaidEvent(order, TEST_ZONE_DATE_TIME, null);
 
         RestaurantApprovalRequest restaurantApprovalRequest = orderMessagingMapper.orderPaidEventToRestaurantApprovalRequest(orderPaidEvent);
 
