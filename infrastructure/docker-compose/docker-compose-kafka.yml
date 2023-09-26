@@ -80,3 +80,15 @@ services:
       PORT: 9021
     networks:
       - ${GLOBAL_NETWORK:-kafka}
+
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./volumes/postgres/data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'admin'
+    networks:
+      - ${GLOBAL_NETWORK:-kafka}
