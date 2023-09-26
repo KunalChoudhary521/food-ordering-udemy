@@ -15,6 +15,4 @@ public abstract class PaymentEvent implements DomainEvent<Payment> {
     private final Payment payment;
     private final ZonedDateTime createdAt;
     private final List<String> failureMessages;
-
-    public abstract void publish();
 }
