@@ -1,5 +1,6 @@
 package com.food.ordering.order.domain.port.input.service;
 
+import com.food.ordering.domain.event.DomainEventPublisher;
 import com.food.ordering.order.domain.ApplicationDomainEventPublisher;
 import com.food.ordering.order.domain.OrderDomainService;
 import com.food.ordering.order.domain.dto.create.CreateOrderCommand;
@@ -37,6 +38,7 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
     private final RestaurantRepository restaurantRepository;
     private final OrderMapper orderMapper;
     private final ApplicationDomainEventPublisher applicationDomainEventPublisher;
+    private final DomainEventPublisher<OrderCreatedEvent> orderCreatedDomainEventPublisher;
 
     @Transactional
     @Override
@@ -44,7 +46,7 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
         checkCustomer(createOrderCommand.getCustomerId());
         Restaurant restaurant = checkRestaurant(createOrderCommand);
         Order order = orderMapper.createOrderCommandToOrder(createOrderCommand);
-        OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitOrder(order, restaurant);
+        OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitOrder(order, restaurant, orderCreatedDomainEventPublisher);
         Order savedOrder = saveOrder(order);
         log.info("Order is saved with id: {}", savedOrder.getId());
         applicationDomainEventPublisher.publish(orderCreatedEvent);
