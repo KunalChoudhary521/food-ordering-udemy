@@ -10,6 +10,8 @@ order-service:
   payment-response-topic: payment-response
   restaurant-approval-request-topic: restaurant-approval-request
   restaurant-approval-response-topic: restaurant-approval-response
+  outbox-scheduler-fixed-rate: 10000
+  outbox-scheduler-initial-delay: 10000
 
 spring:
   jpa:
