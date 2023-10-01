@@ -32,7 +32,7 @@ public class OrderSagaHelper {
         return orderRepository.save(order);
     }
 
-    private SagaStatus orderStatusToSagaStatus(OrderStatus orderStatus) {
+    public SagaStatus orderStatusToSagaStatus(OrderStatus orderStatus) {
         switch (orderStatus) {
             case PAID:
                 return SagaStatus.PROCESSING;

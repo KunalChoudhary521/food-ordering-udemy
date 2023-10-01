@@ -1,8 +1,7 @@
 package com.food.ordering.order.domain.port.input.service;
 
-import com.food.ordering.domain.event.DomainEventPublisher;
-import com.food.ordering.order.domain.ApplicationDomainEventPublisher;
 import com.food.ordering.order.domain.OrderDomainService;
+import com.food.ordering.order.domain.OrderSagaHelper;
 import com.food.ordering.order.domain.dto.create.CreateOrderCommand;
 import com.food.ordering.order.domain.dto.create.CreateOrderResponse;
 import com.food.ordering.order.domain.dto.track.TrackOrderQuery;
@@ -13,10 +12,13 @@ import com.food.ordering.order.domain.event.OrderCreatedEvent;
 import com.food.ordering.order.domain.exception.OrderDomainException;
 import com.food.ordering.order.domain.exception.OrderNotFoundException;
 import com.food.ordering.order.domain.mapper.OrderMapper;
+import com.food.ordering.order.domain.outbox.model.payment.OrderPaymentEventPayload;
+import com.food.ordering.order.domain.outbox.scheduler.payment.PaymentOutboxHelper;
 import com.food.ordering.order.domain.port.output.repository.CustomerRepository;
 import com.food.ordering.order.domain.port.output.repository.OrderRepository;
 import com.food.ordering.order.domain.port.output.repository.RestaurantRepository;
 import com.food.ordering.order.domain.valueobject.TrackingId;
+import com.food.ordering.outbox.OutboxStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,8 +39,8 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
     private final CustomerRepository customerRepository;
     private final RestaurantRepository restaurantRepository;
     private final OrderMapper orderMapper;
-    private final ApplicationDomainEventPublisher applicationDomainEventPublisher;
-    private final DomainEventPublisher<OrderCreatedEvent> orderCreatedDomainEventPublisher;
+    private final PaymentOutboxHelper paymentOutboxHelper;
+    private final OrderSagaHelper orderSagaHelper;
 
     @Transactional
     @Override
@@ -46,11 +48,19 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
         checkCustomer(createOrderCommand.getCustomerId());
         Restaurant restaurant = checkRestaurant(createOrderCommand);
         Order order = orderMapper.createOrderCommandToOrder(createOrderCommand);
-        OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitOrder(order, restaurant, orderCreatedDomainEventPublisher);
+        OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitOrder(order, restaurant);
         Order savedOrder = saveOrder(order);
         log.info("Order is saved with id: {}", savedOrder.getId());
-        applicationDomainEventPublisher.publish(orderCreatedEvent);
-        return orderMapper.orderToCreateOrderResponse(savedOrder, "Order created successfully");
+
+        CreateOrderResponse createOrderResponse = orderMapper.orderToCreateOrderResponse(savedOrder, "Order created successfully");
+
+        OrderPaymentEventPayload orderPaymentEventPayload = orderMapper.orderCreatedEventToOrderPaymentEventPayload(orderCreatedEvent);
+        paymentOutboxHelper.savePaymentOutboxMessage(orderPaymentEventPayload,
+                orderCreatedEvent.getOrder().getOrderStatus(),
+                orderSagaHelper.orderStatusToSagaStatus(orderCreatedEvent.getOrder().getOrderStatus()),
+                OutboxStatus.STARTED, UUID.randomUUID());
+
+        return createOrderResponse;
     }
 
     @Transactional(readOnly = true)

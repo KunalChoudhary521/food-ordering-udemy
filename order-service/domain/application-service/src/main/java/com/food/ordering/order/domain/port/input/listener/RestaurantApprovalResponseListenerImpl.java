@@ -2,7 +2,6 @@ package com.food.ordering.order.domain.port.input.listener;
 
 import com.food.ordering.order.domain.OrderApprovalSaga;
 import com.food.ordering.order.domain.dto.message.RestaurantApprovalResponse;
-import com.food.ordering.order.domain.event.OrderCancelledEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -26,9 +25,9 @@ public class RestaurantApprovalResponseListenerImpl implements RestaurantApprova
 
     @Override
     public void orderRejected(RestaurantApprovalResponse restaurantApprovalResponse) {
-        OrderCancelledEvent orderCancelledEvent = orderApprovalSaga.rollback(restaurantApprovalResponse);
-        log.info("Publishing OrderCancelledEvent for order id: {} with failure messages: {}", restaurantApprovalResponse.getOrderId(),
+        orderApprovalSaga.rollback(restaurantApprovalResponse);
+        log.info("Order Approval Saga rollback operation is completed for order id: {} with failure messages: {}",
+                restaurantApprovalResponse.getOrderId(),
                 String.join(FAILURE_MESSAGE_DELIMITER, restaurantApprovalResponse.getFailureMessages()));
-        orderCancelledEvent.publish();
     }
 }

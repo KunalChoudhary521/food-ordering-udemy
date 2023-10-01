@@ -2,7 +2,6 @@ package com.food.ordering.order.domain.port.input.listener;
 
 import com.food.ordering.order.domain.OrderPaymentSaga;
 import com.food.ordering.order.domain.dto.message.PaymentResponse;
-import com.food.ordering.order.domain.event.OrderPaidEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,9 +19,8 @@ public class PaymentResponseListenerImpl implements PaymentResponseListener {
 
     @Override
     public void paymentCompleted(PaymentResponse paymentResponse) {
-        OrderPaidEvent orderPaidEvent = orderPaymentSaga.process(paymentResponse);
-        log.info("Publishing OrderPaidEvent for order id: {}", paymentResponse.getOrderId());
-        orderPaidEvent.publish();
+        orderPaymentSaga.process(paymentResponse);
+        log.info("Order Payment Saga process operation is completed for order id: {}", paymentResponse.getOrderId());
     }
 
     @Override
