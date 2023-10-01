@@ -17,6 +17,7 @@ import com.food.ordering.order.domain.entity.Order;
 import com.food.ordering.order.domain.entity.OrderItem;
 import com.food.ordering.order.domain.entity.Product;
 import com.food.ordering.order.domain.entity.Restaurant;
+import com.food.ordering.order.domain.event.OrderCancelledEvent;
 import com.food.ordering.order.domain.event.OrderCreatedEvent;
 import com.food.ordering.order.domain.event.OrderPaidEvent;
 import com.food.ordering.order.domain.outbox.model.approval.OrderApprovalEventPayload;
@@ -180,7 +181,25 @@ public class OrderMapperTest {
 
         assertEquals(orderPaidEvent.getOrder().getPrice().getAmount(), orderApprovalEventPayload.getPrice());
         assertEquals(orderPaidEvent.getCreatedAt(), orderApprovalEventPayload.getCreatedAt());
+    }
 
+    @Test
+    public void orderCancelledEvent_orderCancelledEventToOrderPaymentEventPayload_orderPaymentEventPayload() {
+        Order order = Order.builder()
+                .id(TEST_ORDER_ID)
+                .customerId(TEST_CUSTOMER_ID)
+                .price(ORDER_PRICE)
+                .build();
+
+        OrderCancelledEvent orderCancelledEvent = new OrderCancelledEvent(order, TEST_ZONE_DATE_TIME);
+
+        OrderPaymentEventPayload orderPaymentEventPayload = orderMapper.orderCancelledEventToOrderPaymentEventPayload(orderCancelledEvent);
+
+        assertEquals(orderCancelledEvent.getOrder().getId().getValue().toString(), orderPaymentEventPayload.getOrderId());
+        assertEquals(orderCancelledEvent.getOrder().getCustomerId().getValue().toString(), orderPaymentEventPayload.getCustomerId());
+        assertEquals(orderCancelledEvent.getOrder().getPrice().getAmount(), orderPaymentEventPayload.getPrice());
+        assertEquals(PaymentOrderStatus.CANCELLED.name(), orderPaymentEventPayload.getPaymentOrderStatus());
+        assertEquals(orderCancelledEvent.getCreatedAt(), orderPaymentEventPayload.getCreatedAt());
     }
 
     private static CreateOrderCommand getCreateOrderCommand(OrderAddress orderAddress) {

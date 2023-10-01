@@ -10,6 +10,7 @@ import com.food.ordering.order.domain.entity.Order;
 import com.food.ordering.order.domain.entity.OrderItem;
 import com.food.ordering.order.domain.entity.Product;
 import com.food.ordering.order.domain.entity.Restaurant;
+import com.food.ordering.order.domain.event.OrderCancelledEvent;
 import com.food.ordering.order.domain.event.OrderCreatedEvent;
 import com.food.ordering.order.domain.event.OrderPaidEvent;
 import com.food.ordering.order.domain.outbox.model.approval.OrderApprovalEventPayload;
@@ -60,4 +61,10 @@ public interface OrderMapper extends MoneyMapper, BaseIdMapper {
 
     @Mapping(target = "id", source = "orderItem.product.id.value")
     OrderApprovalEventProduct orderItemToOrderApprovalEventProduct(OrderItem orderItem);
+
+    @Mapping(target = "orderId", source = "orderCancelledEvent.order.id.value")
+    @Mapping(target = "customerId", source = "orderCancelledEvent.order.customerId.value")
+    @Mapping(target = "price", source = "orderCancelledEvent.order.price")
+    @Mapping(target = "paymentOrderStatus", expression = "java(com.food.ordering.domain.valueobject.PaymentOrderStatus.CANCELLED.name())")
+    OrderPaymentEventPayload orderCancelledEventToOrderPaymentEventPayload(OrderCancelledEvent orderCancelledEvent);
 }
