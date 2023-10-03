@@ -3,22 +3,16 @@ package com.food.ordering.order.messaging.mapper;
 import com.food.ordering.domain.valueobject.CustomerId;
 import com.food.ordering.domain.valueobject.Money;
 import com.food.ordering.domain.valueobject.OrderId;
-import com.food.ordering.domain.valueobject.OrderStatus;
 import com.food.ordering.domain.valueobject.ProductId;
 import com.food.ordering.domain.valueobject.RestaurantId;
 import com.food.ordering.kafka.order.model.OrderApprovalStatus;
-import com.food.ordering.kafka.order.model.PaymentOrderStatus;
 import com.food.ordering.kafka.order.model.PaymentRequest;
 import com.food.ordering.kafka.order.model.RestaurantApprovalRequest;
-import com.food.ordering.kafka.order.model.RestaurantOrderStatus;
 import com.food.ordering.order.domain.dto.message.PaymentResponse;
 import com.food.ordering.order.domain.dto.message.RestaurantApprovalResponse;
-import com.food.ordering.order.domain.entity.Order;
-import com.food.ordering.order.domain.entity.OrderItem;
-import com.food.ordering.order.domain.entity.Product;
-import com.food.ordering.order.domain.event.OrderCancelledEvent;
-import com.food.ordering.order.domain.event.OrderCreatedEvent;
-import com.food.ordering.order.domain.event.OrderPaidEvent;
+import com.food.ordering.order.domain.outbox.model.approval.OrderApprovalEventPayload;
+import com.food.ordering.order.domain.outbox.model.approval.OrderApprovalEventProduct;
+import com.food.ordering.order.domain.outbox.model.payment.OrderPaymentEventPayload;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -31,7 +25,6 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class OrderMessagingMapperTest {
 
@@ -40,6 +33,7 @@ class OrderMessagingMapperTest {
     private static final RestaurantId TEST_RESTAURANT_ID = new RestaurantId(UUID.fromString("bb830a03-3395-4583-9476-5f99f5515cf3"));
     private static final ProductId TEST_PRODUCT_ID_1 = new ProductId(UUID.fromString("4e89072e-2857-4658-97aa-5642ca21bbe6"));
     private static final ProductId TEST_PRODUCT_ID_2 = new ProductId(UUID.fromString("15b429e7-ed12-4d41-b739-1348bab05d50"));
+    private static final UUID TEST_SAGA_ID = UUID.fromString("a93d1120-e8f1-403c-9a31-0142cae0e6bb");
     private static final UUID TEST_COMPLETED_PAYMENT_ID = UUID.fromString("96eb41ab-b4c7-4713-9394-34e3b031df60");
     private static final UUID TEST_PAYMENT_RESPONSE_EVENT_ID = UUID.fromString("bcb4a9ad-3590-4443-926b-49761ce34593");
     private static final UUID TEST_RESTAURANT_APPROVAL_RESPONSE_EVENT_ID = UUID.fromString("0fe1b3cf-20a3-458b-b2b7-17ef52fdca25");
@@ -48,61 +42,6 @@ class OrderMessagingMapperTest {
     private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 11, 5, 8, 45, 21, 0, UTC);
 
     private final OrderMessagingMapper orderMessagingMapper = Mappers.getMapper(OrderMessagingMapper.class);
-
-    @Test
-    void orderCreatedEvent_orderEventToPaymentRequest_paymentRequest() {
-        Order order = createTestOrder(OrderStatus.PENDING);
-        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(order, TEST_ZONE_DATE_TIME, null);
-
-        PaymentRequest paymentRequest = orderMessagingMapper.orderEventToPaymentRequest(orderCreatedEvent);
-
-        assertNotNull(paymentRequest.getId());
-        assertTrue(paymentRequest.getSagaId().isEmpty());
-        assertEquals(orderCreatedEvent.getOrder().getId().getValue().toString(), paymentRequest.getOrderId());
-        assertEquals(orderCreatedEvent.getOrder().getCustomerId().getValue().toString(), paymentRequest.getCustomerId());
-        assertEquals(orderCreatedEvent.getOrder().getPrice().getAmount(), paymentRequest.getPrice());
-        assertEquals(PaymentOrderStatus.PENDING, paymentRequest.getPaymentOrderStatus());
-        assertEquals(orderCreatedEvent.getCreatedAt(), ZonedDateTime.ofInstant(paymentRequest.getCreatedAt(), UTC));
-    }
-
-    @Test
-    void orderCancelledEvent_orderEventToPaymentRequest_paymentRequest() {
-        Order order = createTestOrder(OrderStatus.CANCELLED);
-        OrderCancelledEvent orderCancelledEvent = new OrderCancelledEvent(order, TEST_ZONE_DATE_TIME, null);
-
-        PaymentRequest paymentRequest = orderMessagingMapper.orderEventToPaymentRequest(orderCancelledEvent);
-
-        assertNotNull(paymentRequest.getId());
-        assertTrue(paymentRequest.getSagaId().isEmpty());
-        assertEquals(orderCancelledEvent.getOrder().getId().getValue().toString(), paymentRequest.getOrderId());
-        assertEquals(orderCancelledEvent.getOrder().getCustomerId().getValue().toString(), paymentRequest.getCustomerId());
-        assertEquals(orderCancelledEvent.getOrder().getPrice().getAmount(), paymentRequest.getPrice());
-        assertEquals(PaymentOrderStatus.CANCELLED, paymentRequest.getPaymentOrderStatus());
-        assertEquals(orderCancelledEvent.getCreatedAt(), ZonedDateTime.ofInstant(paymentRequest.getCreatedAt(), UTC));
-    }
-
-    @Test
-    void orderPaidEvent_orderPaidEventToRestaurantApprovalRequest_restaurantApprovalRequest() {
-        Order order = createTestOrder(OrderStatus.PAID);
-        OrderPaidEvent orderPaidEvent = new OrderPaidEvent(order, TEST_ZONE_DATE_TIME, null);
-
-        RestaurantApprovalRequest restaurantApprovalRequest = orderMessagingMapper.orderPaidEventToRestaurantApprovalRequest(orderPaidEvent);
-
-        assertNotNull(restaurantApprovalRequest.getId());
-        assertTrue(restaurantApprovalRequest.getSagaId().isEmpty());
-        assertEquals(orderPaidEvent.getOrder().getRestaurantId().getValue().toString(), restaurantApprovalRequest.getRestaurantId());
-        assertEquals(orderPaidEvent.getOrder().getId().getValue().toString(), restaurantApprovalRequest.getOrderId());
-        assertEquals(RestaurantOrderStatus.PAID, restaurantApprovalRequest.getRestaurantOrderStatus());
-
-        List<OrderItem> orderItems = orderPaidEvent.getOrder().getOrderItems();
-        assertEquals(orderItems.get(0).getProduct().getId().getValue().toString(), restaurantApprovalRequest.getProducts().get(0).getId());
-        assertEquals(orderItems.get(0).getQuantity(), restaurantApprovalRequest.getProducts().get(0).getQuantity());
-        assertEquals(orderItems.get(1).getProduct().getId().getValue().toString(), restaurantApprovalRequest.getProducts().get(1).getId());
-        assertEquals(orderItems.get(1).getQuantity(), restaurantApprovalRequest.getProducts().get(1).getQuantity());
-
-        assertEquals(orderPaidEvent.getOrder().getPrice().getAmount(), restaurantApprovalRequest.getPrice());
-        assertEquals(orderPaidEvent.getCreatedAt(), ZonedDateTime.ofInstant(restaurantApprovalRequest.getCreatedAt(), UTC));
-    }
 
     @Test
     void paymentResponseAvroModel_paymentResponseAvroModelToPaymentResponse_paymentResponse() {
@@ -157,23 +96,61 @@ class OrderMessagingMapperTest {
         assertThat(restaurantApprovalResponse.getFailureMessages()).containsAll(restaurantApprovalResponseAvroModel.getFailureMessages());
     }
 
-    private Order createTestOrder(OrderStatus orderStatus) {
-        OrderItem item1 = OrderItem.builder()
-                .product(new Product(TEST_PRODUCT_ID_1, "p1", new Money(new BigDecimal("14.29"))))
-                .quantity(1)
-                .build();
-        OrderItem item2 = OrderItem.builder()
-                .product(new Product(TEST_PRODUCT_ID_2, "p2", new Money(new BigDecimal("3.20"))))
-                .quantity(1)
+    @Test
+    void orderPaymentEventPayload_orderPaymentEventPayloadToPaymentRequestAvroModel_paymentRequestAvroModel() {
+        OrderPaymentEventPayload orderPaymentEventPayload = OrderPaymentEventPayload.builder()
+                .orderId(TEST_ORDER_ID.getValue().toString())
+                .customerId(TEST_CUSTOMER_ID.getValue().toString())
+                .price(TEST_PRICE.getAmount())
+                .createdAt(TEST_ZONE_DATE_TIME)
+                .paymentOrderStatus("PENDING")
                 .build();
 
-        return Order.builder()
-                .id(TEST_ORDER_ID)
-                .customerId(TEST_CUSTOMER_ID)
-                .restaurantId(TEST_RESTAURANT_ID)
-                .orderItems(List.of(item1, item2))
-                .price(TEST_PRICE)
-                .orderStatus(orderStatus)
+        PaymentRequest paymentRequest = orderMessagingMapper.orderPaymentEventPayloadToPaymentRequestAvroModel(TEST_SAGA_ID.toString(),
+                orderPaymentEventPayload);
+
+        assertNotNull(paymentRequest.getId());
+        assertEquals(TEST_SAGA_ID.toString(), paymentRequest.getSagaId());
+        assertEquals(orderPaymentEventPayload.getOrderId(), paymentRequest.getOrderId());
+        assertEquals(orderPaymentEventPayload.getCustomerId(), paymentRequest.getCustomerId());
+        assertEquals(orderPaymentEventPayload.getPrice(), paymentRequest.getPrice());
+        assertEquals(orderPaymentEventPayload.getPaymentOrderStatus(), paymentRequest.getPaymentOrderStatus().toString());
+        assertEquals(orderPaymentEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(paymentRequest.getCreatedAt(), UTC));
+    }
+
+    @Test
+    void orderApprovalEventPayload_orderApprovalEventPayloadToRestaurantApprovalRequestAvroModel_restaurantApprovalRequestAvroModel() {
+        OrderApprovalEventPayload orderApprovalEventPayload = OrderApprovalEventPayload.builder()
+                .orderId(TEST_ORDER_ID.getValue().toString())
+                .restaurantId(TEST_RESTAURANT_ID.getValue().toString())
+                .price(TEST_PRICE.getAmount())
+                .createdAt(TEST_ZONE_DATE_TIME)
+                .restaurantOrderStatus("PAID")
+                .products(createOrderApprovalEventProduct())
                 .build();
+
+        RestaurantApprovalRequest restaurantApprovalRequest =
+                orderMessagingMapper.orderApprovalEventPayloadToRestaurantApprovalRequestAvroModel(TEST_SAGA_ID.toString(),
+                        orderApprovalEventPayload);
+
+        assertNotNull(restaurantApprovalRequest.getId());
+        assertEquals(TEST_SAGA_ID.toString(), restaurantApprovalRequest.getSagaId());
+        assertEquals(orderApprovalEventPayload.getOrderId(), restaurantApprovalRequest.getOrderId());
+        assertEquals(orderApprovalEventPayload.getRestaurantId(), restaurantApprovalRequest.getRestaurantId());
+        assertEquals(orderApprovalEventPayload.getRestaurantOrderStatus(), restaurantApprovalRequest.getRestaurantOrderStatus().toString());
+
+        assertEquals(2, restaurantApprovalRequest.getProducts().size());
+        assertEquals(orderApprovalEventPayload.getProducts().get(0).getId(), restaurantApprovalRequest.getProducts().get(0).getId());
+        assertEquals(orderApprovalEventPayload.getProducts().get(0).getQuantity(), restaurantApprovalRequest.getProducts().get(0).getQuantity());
+        assertEquals(orderApprovalEventPayload.getProducts().get(1).getId(), restaurantApprovalRequest.getProducts().get(1).getId());
+        assertEquals(orderApprovalEventPayload.getProducts().get(1).getQuantity(), restaurantApprovalRequest.getProducts().get(1).getQuantity());
+
+        assertEquals(orderApprovalEventPayload.getPrice(), restaurantApprovalRequest.getPrice());
+        assertEquals(orderApprovalEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(restaurantApprovalRequest.getCreatedAt(), UTC));
+    }
+
+    private List<OrderApprovalEventProduct> createOrderApprovalEventProduct() {
+        return List.of(OrderApprovalEventProduct.builder().id(TEST_PRODUCT_ID_1.getValue().toString()).quantity(2).build(),
+                OrderApprovalEventProduct.builder().id(TEST_PRODUCT_ID_2.getValue().toString()).quantity(5).build());
     }
 }
