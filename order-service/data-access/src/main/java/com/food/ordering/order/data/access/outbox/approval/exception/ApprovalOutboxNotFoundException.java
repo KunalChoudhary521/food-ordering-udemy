@@ -1,0 +1,8 @@
+package com.food.ordering.order.data.access.outbox.approval.exception;
+
+public class ApprovalOutboxNotFoundException extends RuntimeException {
+
+    public ApprovalOutboxNotFoundException(String message) {
+        super(message);
+    }
+}
