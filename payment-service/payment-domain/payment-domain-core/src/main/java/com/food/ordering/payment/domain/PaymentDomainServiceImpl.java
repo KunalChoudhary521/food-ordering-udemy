@@ -1,6 +1,5 @@
 package com.food.ordering.payment.domain;
 
-import com.food.ordering.domain.event.DomainEventPublisher;
 import com.food.ordering.domain.valueobject.Money;
 import com.food.ordering.domain.valueobject.PaymentStatus;
 import com.food.ordering.payment.domain.entity.CreditEntry;
@@ -26,9 +25,7 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
 
     @Override
     public PaymentEvent validateAndInitiatePayment(Payment payment, CreditEntry creditEntry,
-                                                   List<CreditHistory> creditHistories, List<String> failureMessages,
-                                                   DomainEventPublisher<PaymentCompletedEvent> paymentCompletedDomainEventPublisher,
-                                                   DomainEventPublisher<PaymentFailedEvent> paymentFailedDomainEventPublisher) {
+                                                   List<CreditHistory> creditHistories, List<String> failureMessages) {
         payment.validatePayment(failureMessages);
         payment.initializePayment();
         validateCreditEntry(payment, creditEntry, failureMessages);
@@ -39,21 +36,17 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
         if (failureMessages == null || failureMessages.isEmpty()) {
             log.info("Payment is initiated for order id: {}", payment.getOrderId().getValue());
             payment.updateStatus(PaymentStatus.COMPLETED);
-            return new PaymentCompletedEvent(payment, CURRENT_UTC_TIME, paymentCompletedDomainEventPublisher);
+            return new PaymentCompletedEvent(payment, CURRENT_UTC_TIME);
         } else {
             log.info("Payment initiation is failed for order id: {}", payment.getOrderId().getValue());
             payment.updateStatus(PaymentStatus.FAILED);
-            return new PaymentFailedEvent(payment, CURRENT_UTC_TIME, failureMessages, paymentFailedDomainEventPublisher);
+            return new PaymentFailedEvent(payment, CURRENT_UTC_TIME, failureMessages);
         }
     }
 
     @Override
-    public PaymentEvent validateAndCancelPayment(Payment payment,
-                                                 CreditEntry creditEntry,
-                                                 List<CreditHistory> creditHistories,
-                                                 List<String> failureMessages,
-                                                 DomainEventPublisher<PaymentCancelledEvent> paymentCancelledDomainEventPublisher,
-                                                 DomainEventPublisher<PaymentFailedEvent> paymentFailedDomainEventPublisher) {
+    public PaymentEvent validateAndCancelPayment(Payment payment, CreditEntry creditEntry,
+                                                 List<CreditHistory> creditHistories, List<String> failureMessages) {
         payment.validatePayment(failureMessages);
         addCreditEntry(payment, creditEntry);
         updateCreditHistory(payment, creditHistories, TransactionType.CREDIT);
@@ -62,11 +55,11 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
             log.info("Payment is cancelled for order id: {}", payment.getOrderId().getValue());
             payment.updateStatus(PaymentStatus.CANCELLED);
 
-            return new PaymentCancelledEvent(payment, CURRENT_UTC_TIME, paymentCancelledDomainEventPublisher);
+            return new PaymentCancelledEvent(payment, CURRENT_UTC_TIME);
         } else {
             log.info("Payment cancellation is failed for order id: {}", payment.getOrderId().getValue());
             payment.updateStatus(PaymentStatus.FAILED);
-            return new PaymentFailedEvent(payment, CURRENT_UTC_TIME, failureMessages, paymentFailedDomainEventPublisher);
+            return new PaymentFailedEvent(payment, CURRENT_UTC_TIME, failureMessages);
         }
     }
 
@@ -83,8 +76,7 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
         creditEntry.subtractCreditAmount(payment.getPrice());
     }
 
-    private void updateCreditHistory(Payment payment,
-                                     List<CreditHistory> creditHistories,
+    private void updateCreditHistory(Payment payment, List<CreditHistory> creditHistories,
                                      TransactionType transactionType) {
         creditHistories.add(CreditHistory.builder()
                 .creditHistoryId(new CreditHistoryId(UUID.randomUUID()))
@@ -95,8 +87,7 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
     }
 
 
-    private void validateCreditHistory(CreditEntry creditEntry,
-                                       List<CreditHistory> creditHistories,
+    private void validateCreditHistory(CreditEntry creditEntry, List<CreditHistory> creditHistories,
                                        List<String> failureMessages) {
         Money totalCreditHistory = getTotalHistoryAmount(creditHistories, TransactionType.CREDIT);
         Money totalDebitHistory = getTotalHistoryAmount(creditHistories, TransactionType.DEBIT);
