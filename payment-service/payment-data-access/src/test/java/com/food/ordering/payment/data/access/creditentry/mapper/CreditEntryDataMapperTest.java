@@ -17,7 +17,7 @@ class CreditEntryDataMapperTest {
 
     private final static CreditEntryId TEST_CREDIT_ENTRY_ID = new CreditEntryId(UUID.fromString("470fee57-076d-4674-976a-47677e2e1e1c"));
     private final static CustomerId TEST_CUSTOMER_ID = new CustomerId(UUID.fromString("e83b984d-9924-4e3b-aead-393099d94db2"));
-    public static final Money TEST_PRICE = new Money(new BigDecimal("10.27"));
+    private final static Money TEST_PRICE = new Money(new BigDecimal("10.27"));
 
     private final CreditEntryDataMapper creditEntryDataMapper = Mappers.getMapper(CreditEntryDataMapper.class);
 

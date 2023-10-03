@@ -22,7 +22,7 @@ class PaymentDataMapperTest {
     private static final PaymentId TEST_PAYMENT_ID = new PaymentId(UUID.fromString("24f4a020-d49e-4680-a423-df2cacb2f0f7"));
     private static final OrderId TEST_ORDER_ID = new OrderId(UUID.fromString("a725ead9-ffdf-42f8-a0a4-3833294fab58"));
     private static final CustomerId TEST_CUSTOMER_ID = new CustomerId(UUID.fromString("20232769-ef18-4506-bb26-a61b1e551bf2"));
-    public static final Money TEST_PRICE = new Money(new BigDecimal("20.23"));
+    private static final Money TEST_PRICE = new Money(new BigDecimal("20.23"));
     private static final ZoneId UTC = ZoneId.of("UTC");
     private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 9, 12, 22, 15, 21, 0, UTC);
 

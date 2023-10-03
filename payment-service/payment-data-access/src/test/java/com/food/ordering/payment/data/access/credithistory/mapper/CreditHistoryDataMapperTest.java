@@ -21,8 +21,8 @@ class CreditHistoryDataMapperTest {
     private static final CreditHistoryId TEST_CREDIT_HISTORY_ID_2 = new CreditHistoryId(UUID.fromString("2ed6ffc0-87a0-4d02-bbc3-7ec7b33cb96a"));
     private static final CustomerId TEST_CUSTOMER_ID_1 = new CustomerId(UUID.fromString("ccd716e5-6044-4dbb-931a-698565de2a40"));
     private static final CustomerId TEST_CUSTOMER_ID_2 = new CustomerId(UUID.fromString("7342d6cc-f360-4618-bd0b-7e989fb59e7f"));
-    public static final Money TEST_PRICE_1 = new Money(new BigDecimal("10.00"));
-    public static final Money TEST_PRICE_2 = new Money(new BigDecimal("15.00"));
+    private static final Money TEST_PRICE_1 = new Money(new BigDecimal("10.00"));
+    private static final Money TEST_PRICE_2 = new Money(new BigDecimal("15.00"));
 
     private final CreditHistoryDataMapper creditHistoryDataMapper = Mappers.getMapper(CreditHistoryDataMapper.class);
 
