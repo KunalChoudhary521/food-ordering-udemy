@@ -1,4 +1,4 @@
-package com.food.ordering.payment.domain.port.output.repository;
+package com.food.ordering.restaurant.domain.port.output.repository;
 
 import com.food.ordering.restaurant.domain.entity.OrderApproval;
 

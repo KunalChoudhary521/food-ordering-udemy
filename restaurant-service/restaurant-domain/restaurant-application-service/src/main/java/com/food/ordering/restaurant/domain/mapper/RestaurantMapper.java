@@ -1,11 +1,11 @@
-package com.food.ordering.payment.domain.mapper;
+package com.food.ordering.restaurant.domain.mapper;
 
 import com.food.ordering.domain.mapper.MoneyMapper;
 import com.food.ordering.domain.valueobject.OrderId;
 import com.food.ordering.domain.valueobject.OrderStatus;
 import com.food.ordering.domain.valueobject.RestaurantId;
 import com.food.ordering.domain.valueobject.RestaurantOrderStatus;
-import com.food.ordering.payment.domain.dto.RestaurantApprovalRequest;
+import com.food.ordering.restaurant.domain.dto.RestaurantApprovalRequest;
 import com.food.ordering.restaurant.domain.entity.Restaurant;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

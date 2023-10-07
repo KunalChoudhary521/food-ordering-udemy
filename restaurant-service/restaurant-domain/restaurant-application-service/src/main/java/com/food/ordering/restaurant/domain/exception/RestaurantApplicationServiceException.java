@@ -1,4 +1,4 @@
-package com.food.ordering.payment.domain.exception;
+package com.food.ordering.restaurant.domain.exception;
 
 import com.food.ordering.domain.exception.DomainException;
 

@@ -1,9 +1,9 @@
-package com.food.ordering.payment.domain.mapper;
+package com.food.ordering.restaurant.domain.mapper;
 
 import com.food.ordering.domain.valueobject.Money;
 import com.food.ordering.domain.valueobject.ProductId;
 import com.food.ordering.domain.valueobject.RestaurantOrderStatus;
-import com.food.ordering.payment.domain.dto.RestaurantApprovalRequest;
+import com.food.ordering.restaurant.domain.dto.RestaurantApprovalRequest;
 import com.food.ordering.restaurant.domain.entity.Product;
 import com.food.ordering.restaurant.domain.entity.Restaurant;
 import org.junit.jupiter.api.Test;

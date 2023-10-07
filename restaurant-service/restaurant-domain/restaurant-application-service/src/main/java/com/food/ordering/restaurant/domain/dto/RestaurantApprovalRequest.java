@@ -1,4 +1,4 @@
-package com.food.ordering.payment.domain.dto;
+package com.food.ordering.restaurant.domain.dto;
 
 
 import com.food.ordering.domain.valueobject.RestaurantOrderStatus;
