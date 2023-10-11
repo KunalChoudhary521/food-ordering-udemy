@@ -34,11 +34,11 @@ public class OrderEntityMapperTest {
     private static final ProductId TEST_PRODUCT_ID_1 = new ProductId(UUID.fromString("efbb4a04-9127-412d-be66-756f933e0677"));
     private static final UUID TEST_ADDRESS_ID = UUID.fromString("ecba8e66-4776-4db3-9ba3-c25af16927a3");
     private static final OrderItemId TEST_ORDER_ITEM_ID = new OrderItemId(1L);
-    public static final String TEST_STREET = "123 Test Street Rd.";
-    public static final String TEST_CITY = "Test city";
-    public static final String TEST_COUNTRY = "Test country";
-    public static final String TEST_POSTAL_CODE = "12345";
-    public static final BigDecimal ORDER_PRICE = new BigDecimal("43.67");
+    private static final String TEST_STREET = "123 Test Street Rd.";
+    private static final String TEST_CITY = "Test city";
+    private static final String TEST_COUNTRY = "Test country";
+    private static final String TEST_POSTAL_CODE = "12345";
+    private static final BigDecimal ORDER_PRICE = new BigDecimal("43.67");
 
     private final OrderEntityMapper orderEntityMapper = Mappers.getMapper(OrderEntityMapper.class);
 

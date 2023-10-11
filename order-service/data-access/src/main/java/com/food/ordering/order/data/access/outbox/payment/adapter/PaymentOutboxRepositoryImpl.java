@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Component
-public class PaymentOutboxJpaRepositoryImpl implements PaymentOutboxRepository {
+public class PaymentOutboxRepositoryImpl implements PaymentOutboxRepository {
 
     private final PaymentOutboxJpaRepository paymentOutboxJpaRepository;
     private final PaymentOutboxEntityMapper paymentOutboxEntityMapper;
