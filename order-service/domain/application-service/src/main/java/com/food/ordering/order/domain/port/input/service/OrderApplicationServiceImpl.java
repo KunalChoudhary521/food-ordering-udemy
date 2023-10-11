@@ -32,7 +32,7 @@ import java.util.UUID;
 @Slf4j
 @Validated
 @AllArgsConstructor
-class OrderApplicationServiceImpl implements OrderApplicationService {
+public class OrderApplicationServiceImpl implements OrderApplicationService {
 
     private final OrderDomainService orderDomainService;
     private final OrderRepository orderRepository;
