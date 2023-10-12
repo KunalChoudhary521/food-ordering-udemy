@@ -3,7 +3,7 @@ package com.food.ordering.order.data.access.order.adapter;
 import com.food.ordering.domain.valueobject.OrderId;
 import com.food.ordering.order.data.access.order.entity.OrderEntity;
 import com.food.ordering.order.data.access.order.mapper.OrderEntityMapper;
-import com.food.ordering.order.data.access.order.respository.OrderJpaRepository;
+import com.food.ordering.order.data.access.order.repository.OrderJpaRepository;
 import com.food.ordering.order.domain.entity.Order;
 import com.food.ordering.order.domain.port.output.repository.OrderRepository;
 import com.food.ordering.order.domain.valueobject.TrackingId;
