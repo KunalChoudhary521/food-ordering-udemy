@@ -24,6 +24,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "restaurant_approval_outbox")
 @Entity
 public class ApprovalOutboxEntity {
