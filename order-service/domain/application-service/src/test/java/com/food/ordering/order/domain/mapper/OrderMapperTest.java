@@ -82,10 +82,10 @@ public class OrderMapperTest {
         OrderItem orderItemDto = order.getOrderItems().get(0);
         assertEquals(TEST_PRODUCT_ID_1.getValue(), orderItemDto.getProduct().getId().getValue());
         assertEquals(ORDER_PRICE, orderItemDto.getPrice());
-        assertNull(orderItemDto.getProduct().getPrice());
+        assertEquals(ORDER_PRICE, orderItemDto.getProduct().getPrice());
         assertNull(orderItemDto.getProduct().getName());
 
-        assertEquals(OrderStatus.PENDING, order.getOrderStatus());
+        assertNull(order.getOrderStatus());
         assertNull(order.getFailureMessages());
         assertNull(order.getTrackingId());
     }

@@ -44,6 +44,7 @@ public interface OrderMapper extends MoneyMapper, BaseIdMapper {
     StreetAddress orderAddressToStreetAddress(OrderAddress orderAddress);
 
     @Mapping(target = "product.productId", source = "orderItemDto.productId")
+    @Mapping(target = "product.price", source = "orderItemDto.price")
     OrderItem toOrderItem(OrderItemDto orderItemDto);
 
     @Mapping(target = "orderId", source = "orderCreatedEvent.order.id.value")
