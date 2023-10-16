@@ -40,7 +40,7 @@ public class Order extends AggregateRoot<OrderId> {
         this.price = price;
         this.orderItems = orderItems;
         this.trackingId = trackingId;
-        this.orderStatus = (orderStatus == null) ? OrderStatus.PENDING: orderStatus;
+        this.orderStatus = orderStatus;
         this.failureMessages = failureMessages;
     }
 
@@ -89,7 +89,7 @@ public class Order extends AggregateRoot<OrderId> {
 
     private void validateInitialOrder() {
         if (orderStatus != null || getId() != null) {
-            throw new OrderDomainException("Order status or id is missing for initialization");
+            throw new OrderDomainException("Order is not in correct state for initialization");
         }
     }
 
