@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    defer-datasource-initialization: true #https://www.baeldung.com/spring-boot-data-sql-and-schema-sql
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:h2:mem:test_db;DATABASE_TO_LOWER=true;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'src/test/resources/schema.sql';
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      platform: h2
+      schema-locations:
+      data-locations: classpath:data.sql
+
+kafka-config:
+  bootstrap-servers: mock://test-url:9001
+  schema-registry-url: mock://test-url:9000
