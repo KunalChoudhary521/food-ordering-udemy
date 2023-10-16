@@ -1,17 +1,18 @@
 package com.food.ordering.order.data.access.order.mapper;
 
+import com.food.ordering.domain.mapper.MoneyMapper;
 import com.food.ordering.order.data.access.order.entity.OrderAddressEntity;
 import com.food.ordering.order.data.access.order.entity.OrderEntity;
 import com.food.ordering.order.data.access.order.entity.OrderItemEntity;
 import com.food.ordering.order.domain.entity.Order;
 import com.food.ordering.order.domain.entity.OrderItem;
 import com.food.ordering.order.domain.mapper.BaseIdMapper;
-import com.food.ordering.domain.mapper.MoneyMapper;
 import com.food.ordering.order.domain.valueobject.StreetAddress;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,10 +43,10 @@ public interface OrderEntityMapper extends MoneyMapper, BaseIdMapper {
     OrderItemEntity orderItemToOrderItemEntity(OrderItem orderItem);
 
     default List<String> stringToList(String value) {
-        return Arrays.stream(value.split(FAILURE_MESSAGE_DELIMITER)).toList();
+        return (value == null) ? new ArrayList<>() : Arrays.asList(value.split(FAILURE_MESSAGE_DELIMITER));
     }
 
     default String listToString(List<String> value) {
-        return String.join(FAILURE_MESSAGE_DELIMITER, value);
+        return (value == null) ? "" : String.join(FAILURE_MESSAGE_DELIMITER, value);
     }
 }

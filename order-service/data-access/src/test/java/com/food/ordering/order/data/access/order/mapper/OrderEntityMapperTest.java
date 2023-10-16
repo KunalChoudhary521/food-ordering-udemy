@@ -22,8 +22,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OrderEntityMapperTest {
 
@@ -66,7 +66,6 @@ public class OrderEntityMapperTest {
                 .trackingId(TEST_TRACKING_ID.getValue())
                 .price(ORDER_PRICE)
                 .orderStatus(OrderStatus.APPROVED)
-                .failureMessages("fail1,fail2,fail3")
                 .address(orderAddressEntity)
                 .items(orderItems)
                 .build();
@@ -95,7 +94,7 @@ public class OrderEntityMapperTest {
 
         assertEquals(orderEntity.getTrackingId(), order.getTrackingId().getValue());
         assertEquals(orderEntity.getOrderStatus(), order.getOrderStatus());
-        assertThat(order.getFailureMessages()).contains("fail2", "fail3", "fail1");
+        assertTrue(order.getFailureMessages().isEmpty());
     }
 
     @Test
