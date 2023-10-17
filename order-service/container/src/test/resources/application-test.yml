@@ -19,5 +19,6 @@ spring:
       data-locations: classpath:data.sql
 
 kafka-config:
-  bootstrap-servers: mock://test-url:9001
+  bootstrap-servers: localhost:9092
   schema-registry-url: mock://test-url:9000
+  num-of-partitions: 1
