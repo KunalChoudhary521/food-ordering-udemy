@@ -36,6 +36,7 @@
         <avro.version>1.11.0</avro.version>
         <snakeyaml.version>2.1</snakeyaml.version><!--vulnerability free version-->
         <h2database.version>2.2.224</h2database.version>
+        <awaitility.version>4.2.0</awaitility.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -228,6 +229,12 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka-test</artifactId>
             <version>${spring-kafka.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
