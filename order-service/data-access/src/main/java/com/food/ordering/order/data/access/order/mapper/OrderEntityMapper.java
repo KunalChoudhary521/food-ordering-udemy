@@ -43,7 +43,7 @@ public interface OrderEntityMapper extends MoneyMapper, BaseIdMapper {
     OrderItemEntity orderItemToOrderItemEntity(OrderItem orderItem);
 
     default List<String> stringToList(String value) {
-        return (value == null) ? new ArrayList<>() : Arrays.asList(value.split(FAILURE_MESSAGE_DELIMITER));
+        return (value == null) ? new ArrayList<>() : new ArrayList<>(Arrays.asList(value.split(FAILURE_MESSAGE_DELIMITER)));
     }
 
     default String listToString(List<String> value) {
