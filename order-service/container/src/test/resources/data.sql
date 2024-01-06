@@ -94,3 +94,21 @@ INSERT INTO restaurant_approval_outbox(id, saga_id, created_at, processed_at, ty
            '2023-12-10 12:01:00+00:00', 'OrderProcessingSaga',
            '{"orderId": "00000000-0000-0000-0000-00000000014", "sagaId": "00000000-0000-0000-0000-00000000008", "restaurantId": "00000000-0000-0000-0000-000000000001", "createdAt": "2023-12-10T12:00:00.000Z", "orderApprovalStatus": "REJECTED"}',
            'PROCESSING', 'PAID', 'STARTED', 0);
+
+-- RestaurantApprovalOutboxSchedulerTest
+INSERT INTO restaurant_approval_outbox(id, saga_id, created_at, processed_at, type, payload, saga_status, order_status, outbox_status, version)
+VALUES('00000000-0000-0000-0000-000000000050', '00000000-0000-0000-0000-000000000050', '2024-01-16 18:00:00+00:00',
+       '2024-01-06 18:01:00+00:00', 'OrderProcessingSaga',
+       '{"orderId": "00000000-0000-0000-0000-00000000050", "restaurantId": "00000000-0000-0000-0000-000000000001", "price": 25.18, "createdAt": "2024-01-06T18:00:00.000Z", "restaurantOrderStatus": "PAID", "products": [{ "id": "p1", "quantity": 1 }]}',
+       'PROCESSING', 'PAID', 'STARTED', 0);
+
+-- RestaurantApprovalOutboxCleanerSchedulerTest
+INSERT INTO restaurant_approval_outbox(id, saga_id, created_at, processed_at, type, payload, saga_status, order_status, outbox_status, version)
+VALUES('00000000-0000-0000-0000-000000000051', '00000000-0000-0000-0000-000000000051', '2024-01-16 18:00:00+00:00',
+       '2024-01-06 18:01:00+00:00', 'OrderProcessingSaga', 'test payload', 'SUCCEEDED', 'PAID', 'COMPLETED', 0);
+INSERT INTO restaurant_approval_outbox(id, saga_id, created_at, processed_at, type, payload, saga_status, order_status, outbox_status, version)
+VALUES('00000000-0000-0000-0000-000000000052', '00000000-0000-0000-0000-000000000052', '2024-01-16 18:00:00+00:00',
+       '2024-01-06 18:01:00+00:00', 'OrderProcessingSaga', 'test payload', 'FAILED', 'PAID', 'COMPLETED', 0);
+INSERT INTO restaurant_approval_outbox(id, saga_id, created_at, processed_at, type, payload, saga_status, order_status, outbox_status, version)
+VALUES('00000000-0000-0000-0000-000000000053', '00000000-0000-0000-0000-000000000053', '2024-01-16 18:00:00+00:00',
+       '2024-01-06 18:01:00+00:00', 'OrderProcessingSaga', 'test payload', 'COMPENSATED', 'PAID', 'COMPLETED', 0);

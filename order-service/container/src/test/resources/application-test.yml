@@ -22,3 +22,6 @@ kafka-config:
   bootstrap-servers: localhost:9092
   schema-registry-url: mock://test-url:9000
   num-of-partitions: 1
+
+order-service:
+  outbox-scheduler-initial-delay: 300000 #To prevent scheduler methods from triggering during debugging
