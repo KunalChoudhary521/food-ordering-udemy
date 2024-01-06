@@ -20,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = OrderServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EmbeddedKafka(topics = "${order-service.payment-request-topic}", partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092"})
+@EmbeddedKafka(topics = "${order-service.payment-request-topic}", partitions = 1,
+        bootstrapServersProperty = "kafka-config.bootstrap-servers")
 @ActiveProfiles("test")
 class KafkaProducerTest {
 

@@ -33,9 +33,9 @@ import static com.food.ordering.saga.order.SagaConstants.ORDER_SAGA_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = OrderServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"kafka-config.bootstrap-servers=localhost:9093"})
-@EmbeddedKafka(topics = "${order-service.payment-response-topic}", partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9093"})
+@SpringBootTest(classes = OrderServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EmbeddedKafka(topics = "${order-service.payment-response-topic}", partitions = 1,
+        bootstrapServersProperty = "kafka-config.bootstrap-servers")
 @ActiveProfiles("test")
 class PaymentResponseKafkaListenerTest {
 
@@ -62,7 +62,7 @@ class PaymentResponseKafkaListenerTest {
     @Test
     void completedPaymentResponseAvroModel_receive_orderPaidAndSagaProcessing() {
         PaymentResponse completedPaymentResponse = createPaymentResponse(ORDER_PAID_ID.toString(), PaymentStatus.COMPLETED,
-                List.of(), ORDER_PAID_SAGA_ID.toString());
+                new ArrayList<>(), ORDER_PAID_SAGA_ID.toString());
 
         kafkaTemplate.send(paymentResponseTopic, completedPaymentResponse);
 
