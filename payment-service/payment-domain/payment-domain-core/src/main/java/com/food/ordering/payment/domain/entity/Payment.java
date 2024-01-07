@@ -9,10 +9,11 @@ import com.food.ordering.payment.domain.valueobject.PaymentId;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import static com.food.ordering.domain.constants.CommonConstants.CURRENT_UTC_TIME;
 
 @Getter
 public class Payment extends AggregateRoot<PaymentId> {
@@ -37,7 +38,7 @@ public class Payment extends AggregateRoot<PaymentId> {
 
     public void initializePayment() {
         setId(new PaymentId(UUID.randomUUID()));
-        createdAt = ZonedDateTime.now(ZoneId.of("UTC"));
+        createdAt = CURRENT_UTC_TIME;
     }
 
     public void validatePayment(List<String> failureMessages) {
