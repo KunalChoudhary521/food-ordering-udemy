@@ -7,7 +7,7 @@ import com.food.ordering.restaurant.domain.outbox.model.OrderOutboxMessage;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -20,9 +20,8 @@ class OrderOutboxEntityMapperTest {
     private final static OutboxStatus TEST_OUTBOX_STATUS = OutboxStatus.STARTED;
     private static final OrderApprovalStatus TEST_ORDER_APPROVAL_STATUS = OrderApprovalStatus.APPROVED;
     private final static int TEST_ENTITY_VERSION = 1;
-    private final static ZoneId UTC = ZoneId.of("UTC");
-    private final static ZonedDateTime TEST_ZONE_DATE_TIME_1 = ZonedDateTime.of(2023, 11, 4, 11, 5, 0, 0, UTC);
-    private final static ZonedDateTime TEST_ZONE_DATE_TIME_2 = ZonedDateTime.of(2023, 11, 4, 11, 0, 0, 0, UTC);
+    private final static ZonedDateTime TEST_ZONE_DATE_TIME_1 = ZonedDateTime.of(2023, 11, 4, 11, 5, 0, 0, ZoneOffset.UTC);
+    private final static ZonedDateTime TEST_ZONE_DATE_TIME_2 = ZonedDateTime.of(2023, 11, 4, 11, 0, 0, 0, ZoneOffset.UTC);
 
     private final OrderOutboxEntityMapper orderOutboxEntityMapper = Mappers.getMapper(OrderOutboxEntityMapper.class);
 
