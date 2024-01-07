@@ -19,10 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.food.ordering.domain.constants.CommonConstants.CURRENT_UTC_TIME;
 
 @Component
 @AllArgsConstructor
@@ -101,7 +101,7 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse> {
 
     private OrderApprovalOutboxMessage updateOrderApprovalOutboxMessage(OrderApprovalOutboxMessage orderApprovalOutboxMessage,
                                                                         OrderStatus orderStatus, SagaStatus sagaStatus) {
-        orderApprovalOutboxMessage.setProcessedAt(ZonedDateTime.now(ZoneId.of("UTC")));
+        orderApprovalOutboxMessage.setProcessedAt(CURRENT_UTC_TIME);
         orderApprovalOutboxMessage.setOrderStatus(orderStatus);
         orderApprovalOutboxMessage.setSagaStatus(sagaStatus);
 
@@ -120,7 +120,7 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse> {
         }
 
         OrderPaymentOutboxMessage orderPaymentOutboxMessage = orderPaymentOutboxMessageResponse.get();
-        orderPaymentOutboxMessage.setProcessedAt(ZonedDateTime.now(ZoneId.of("UTC")));
+        orderPaymentOutboxMessage.setProcessedAt(CURRENT_UTC_TIME);
         orderPaymentOutboxMessage.setOrderStatus(orderStatus);
         orderPaymentOutboxMessage.setSagaStatus(sagaStatus);
 

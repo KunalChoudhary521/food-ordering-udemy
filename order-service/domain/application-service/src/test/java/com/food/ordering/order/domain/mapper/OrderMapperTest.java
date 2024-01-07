@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -49,8 +49,7 @@ public class OrderMapperTest {
     private static final ProductId TEST_PRODUCT_ID_1 = new ProductId(UUID.fromString("daaee495-8a75-43a8-bfff-ec5e5e35db00"));
     private static final ProductId TEST_PRODUCT_ID_2 = new ProductId(UUID.fromString("289d16a9-a43b-4c4f-aa58-5324357b9d23"));
     private static final Money ORDER_PRICE = new Money(new BigDecimal("20.83"));
-    private static final ZoneId UTC = ZoneId.of("UTC");
-    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 12, 12, 6, 5, 21, 0, UTC);
+    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 12, 12, 6, 5, 21, 0, ZoneOffset.UTC);
 
     private final OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
 
