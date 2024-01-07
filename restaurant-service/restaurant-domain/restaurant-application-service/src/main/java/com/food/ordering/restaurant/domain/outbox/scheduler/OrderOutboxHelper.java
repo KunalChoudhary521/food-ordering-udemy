@@ -13,12 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.food.ordering.domain.constants.CommonConstants.CURRENT_UTC_TIME;
 import static com.food.ordering.saga.order.SagaConstants.ORDER_SAGA_NAME;
 
 @AllArgsConstructor
@@ -54,7 +53,7 @@ public class OrderOutboxHelper {
                 .id(UUID.randomUUID())
                 .sagaId(sagaId)
                 .createdAt(orderEventPayload.getCreatedAt())
-                .processedAt(ZonedDateTime.now(ZoneId.of("UTC")))
+                .processedAt(CURRENT_UTC_TIME)
                 .type(ORDER_SAGA_NAME)
                 .payload(createPayload(orderEventPayload))
                 .approvalStatus(approvalStatus)

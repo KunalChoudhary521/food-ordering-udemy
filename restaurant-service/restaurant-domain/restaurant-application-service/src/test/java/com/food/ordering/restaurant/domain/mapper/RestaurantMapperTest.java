@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -30,8 +30,7 @@ class RestaurantMapperTest {
     private static final OrderId TEST_ORDER_ID = new OrderId(UUID.fromString("bfd20746-6721-4beb-831b-c1957355c8c3"));
     private static final RestaurantId TEST_RESTAURANT_ID = new RestaurantId(UUID.fromString("224ee6e2-ea1e-4058-9887-7dae9e93ca97"));
     private static final Money ORDER_PRICE = new Money(new BigDecimal("16.09"));
-    private static final ZoneId UTC = ZoneId.of("UTC");
-    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 12, 12, 6, 5, 21, 0, UTC);
+    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 12, 12, 6, 5, 21, 0, ZoneOffset.UTC);
     private static final ProductId TEST_PRODUCT_ID_1 = new ProductId(UUID.fromString("83b03dbf-c7d4-40dc-8df7-05ef32caa319"));
     private static final ProductId TEST_PRODUCT_ID_2 = new ProductId(UUID.fromString("53347a3d-7a1c-4292-a417-9ab36cfa5f65"));
 
