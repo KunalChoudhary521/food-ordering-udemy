@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -23,8 +23,7 @@ class PaymentDataMapperTest {
     private static final OrderId TEST_ORDER_ID = new OrderId(UUID.fromString("a725ead9-ffdf-42f8-a0a4-3833294fab58"));
     private static final CustomerId TEST_CUSTOMER_ID = new CustomerId(UUID.fromString("20232769-ef18-4506-bb26-a61b1e551bf2"));
     private static final Money TEST_PRICE = new Money(new BigDecimal("20.23"));
-    private static final ZoneId UTC = ZoneId.of("UTC");
-    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 9, 12, 22, 15, 21, 0, UTC);
+    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 9, 12, 22, 15, 21, 0, ZoneOffset.UTC);
 
     private final PaymentDataMapper paymentDataMapper = Mappers.getMapper(PaymentDataMapper.class);
 
