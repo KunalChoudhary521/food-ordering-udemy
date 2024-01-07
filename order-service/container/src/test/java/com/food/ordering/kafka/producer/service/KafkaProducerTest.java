@@ -12,10 +12,10 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
+import static com.food.ordering.domain.constants.CommonConstants.CURRENT_UTC_TIME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -39,7 +39,7 @@ class KafkaProducerTest {
                 .setOrderId(UUID.randomUUID().toString())
                 .setCustomerId(UUID.randomUUID().toString())
                 .setPrice(new BigDecimal("20.23"))
-                .setCreatedAt(ZonedDateTime.now().toInstant())
+                .setCreatedAt(CURRENT_UTC_TIME.toInstant())
                 .setPaymentOrderStatus(PaymentOrderStatus.PENDING)
                 .build();
 

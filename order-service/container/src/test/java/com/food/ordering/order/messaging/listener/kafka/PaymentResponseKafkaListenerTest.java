@@ -23,12 +23,12 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.food.ordering.domain.constants.CommonConstants.CURRENT_UTC_TIME;
 import static com.food.ordering.saga.order.SagaConstants.ORDER_SAGA_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -117,7 +117,7 @@ class PaymentResponseKafkaListenerTest {
                 .setPaymentId(UUID.randomUUID().toString())
                 .setCustomerId(UUID.randomUUID().toString())
                 .setPrice(new BigDecimal("56.23"))
-                .setCreatedAt(ZonedDateTime.now().toInstant())
+                .setCreatedAt(CURRENT_UTC_TIME.toInstant())
                 .setPaymentStatus(paymentStatus)
                 .setFailureMessages(failureMessages)
                 .build();

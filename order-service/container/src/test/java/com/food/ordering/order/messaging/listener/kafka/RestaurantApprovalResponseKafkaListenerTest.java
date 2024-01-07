@@ -22,12 +22,12 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.food.ordering.domain.constants.CommonConstants.CURRENT_UTC_TIME;
 import static com.food.ordering.saga.order.SagaConstants.ORDER_SAGA_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -119,7 +119,7 @@ public class RestaurantApprovalResponseKafkaListenerTest {
                 .setSagaId(sagaId)
                 .setOrderId(orderId)
                 .setRestaurantId(UUID.randomUUID().toString())
-                .setCreatedAt(ZonedDateTime.now().toInstant())
+                .setCreatedAt(CURRENT_UTC_TIME.toInstant())
                 .setOrderApprovalStatus(orderApprovalStatus)
                 .setFailureMessages(failureMessage)
                 .build();
