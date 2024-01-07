@@ -7,14 +7,12 @@ import com.food.ordering.restaurant.domain.event.OrderApprovedEvent;
 import com.food.ordering.restaurant.domain.event.OrderRejectedEvent;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
+
+import static com.food.ordering.domain.constants.CommonConstants.CURRENT_UTC_TIME;
 
 @Slf4j
 public class RestaurantDomainServiceImpl implements RestaurantDomainService {
-
-    private final static ZonedDateTime CURRENT_UTC_TIME = ZonedDateTime.now(ZoneId.of("UTC"));
 
     @Override
     public OrderApprovalEvent validateOrder(Restaurant restaurant, List<String> failureMessages) {
