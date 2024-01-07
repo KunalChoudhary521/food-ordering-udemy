@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -29,8 +29,7 @@ class RestaurantMessagingMapperTest {
     private static final OrderId TEST_ORDER_ID = new OrderId(UUID.fromString("9a62bcae-9708-43bf-a19f-9e514221110a"));
     private static final UUID TEST_SAGA_ID = UUID.fromString("842dfdd0-b85b-42f9-864f-35560afd16be");
     private static final Money TEST_PRICE = new Money(new BigDecimal("11.07"));
-    private static final ZoneId UTC = ZoneId.of("UTC");
-    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 9, 23, 9, 17, 21, 0, UTC);
+    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 9, 23, 9, 17, 21, 0, ZoneOffset.UTC);
     private static final ProductId TEST_PRODUCT_ID_1 = new ProductId(UUID.fromString("c4b9a4a2-a36e-478a-b46b-3f891e56d502"));
     private static final ProductId TEST_PRODUCT_ID_2 = new ProductId(UUID.fromString("e1830351-b1d8-47b7-b712-8693fd4bdc26"));
 
@@ -92,7 +91,7 @@ class RestaurantMessagingMapperTest {
         assertEquals(TEST_SAGA_ID.toString(), restaurantApprovalResponse.getSagaId());
         assertEquals(orderEventPayload.getOrderId(), restaurantApprovalResponse.getOrderId());
         assertEquals(orderEventPayload.getRestaurantId(), restaurantApprovalResponse.getRestaurantId());
-        assertEquals(orderEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(restaurantApprovalResponse.getCreatedAt(), UTC));
+        assertEquals(orderEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(restaurantApprovalResponse.getCreatedAt(), ZoneOffset.UTC));
         assertEquals(orderEventPayload.getOrderApprovalStatus(), restaurantApprovalResponse.getOrderApprovalStatus().toString());
         assertThat(restaurantApprovalResponse.getFailureMessages()).containsAll(orderEventPayload.getFailureMessages());
     }
