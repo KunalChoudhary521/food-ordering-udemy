@@ -8,7 +8,7 @@ import com.food.ordering.saga.SagaStatus;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -22,9 +22,8 @@ class PaymentOutboxEntityMapperTest {
     private final static SagaStatus TEST_SAGA_STATUS = SagaStatus.STARTED;
     private final static OutboxStatus TEST_OUTBOX_STATUS = OutboxStatus.STARTED;
     private final static int TEST_ENTITY_VERSION = 1;
-    private final static ZoneId UTC = ZoneId.of("UTC");
-    private final static ZonedDateTime TEST_ZONE_DATE_TIME_1 = ZonedDateTime.of(2023, 10, 3, 6, 36, 2, 0, UTC);
-    private final static ZonedDateTime TEST_ZONE_DATE_TIME_2 = ZonedDateTime.of(2023, 9, 29, 18, 45, 7, 0, UTC);
+    private final static ZonedDateTime TEST_ZONE_DATE_TIME_1 = ZonedDateTime.of(2023, 10, 3, 6, 36, 2, 0, ZoneOffset.UTC);
+    private final static ZonedDateTime TEST_ZONE_DATE_TIME_2 = ZonedDateTime.of(2023, 9, 29, 18, 45, 7, 0, ZoneOffset.UTC);
 
     private final PaymentOutboxEntityMapper paymentOutboxEntityMapper = Mappers.getMapper(PaymentOutboxEntityMapper.class);
 

@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +31,6 @@ class ApprovalOutboxJpaRepositoryTest {
 
     private static final UUID UUID_1 = UUID.fromString("00000000-0000-0000-0000-000000000001");
     private static final UUID UUID_2 = UUID.fromString("00000000-0000-0000-0000-000000000002");
-    private static final ZoneId UTC_ZONE_ID = ZoneId.of("UTC");
 
     @Autowired
     private ApprovalOutboxJpaRepository approvalOutboxJpaRepository;
@@ -50,8 +49,8 @@ class ApprovalOutboxJpaRepositoryTest {
 
         assertEquals(UUID_1, approvalOutboxEntities.get(0).getId());
         assertEquals(UUID_1, approvalOutboxEntities.get(0).getSagaId());
-        assertEquals(ZonedDateTime.of(2023, 10, 13, 14, 0, 0, 0, UTC_ZONE_ID), approvalOutboxEntities.get(0).getCreatedAt());
-        assertEquals(ZonedDateTime.of(2023, 10, 13, 14, 1, 0, 0, UTC_ZONE_ID), approvalOutboxEntities.get(0).getProcessedAt());
+        assertEquals(ZonedDateTime.of(2023, 10, 13, 14, 0, 0, 0, ZoneOffset.UTC), approvalOutboxEntities.get(0).getCreatedAt());
+        assertEquals(ZonedDateTime.of(2023, 10, 13, 14, 1, 0, 0, ZoneOffset.UTC), approvalOutboxEntities.get(0).getProcessedAt());
         assertEquals(ORDER_SAGA_NAME, approvalOutboxEntities.get(0).getType());
         assertEquals("restaurant_approval_outbox db test payload", approvalOutboxEntities.get(0).getPayload());
         assertEquals(sagaStatus, approvalOutboxEntities.get(0).getSagaStatus());
@@ -72,8 +71,8 @@ class ApprovalOutboxJpaRepositoryTest {
         ApprovalOutboxEntity approvalOutboxEntity = approvalOutboxEntityOpt.get();
         assertEquals(UUID_2, approvalOutboxEntity.getId());
         assertEquals(UUID_2, approvalOutboxEntity.getSagaId());
-        assertEquals(ZonedDateTime.of(2023, 11, 23, 15, 0, 0, 0, UTC_ZONE_ID), approvalOutboxEntity.getCreatedAt());
-        assertEquals(ZonedDateTime.of(2023, 11, 23, 15, 1, 0, 0, UTC_ZONE_ID), approvalOutboxEntity.getProcessedAt());
+        assertEquals(ZonedDateTime.of(2023, 11, 23, 15, 0, 0, 0, ZoneOffset.UTC), approvalOutboxEntity.getCreatedAt());
+        assertEquals(ZonedDateTime.of(2023, 11, 23, 15, 1, 0, 0, ZoneOffset.UTC), approvalOutboxEntity.getProcessedAt());//update to SB 3.2 and replace UTC_ZONE_ID with ZoneOffset.UTC
         assertEquals(ORDER_SAGA_NAME, approvalOutboxEntity.getType());
         assertEquals("restaurant_approval_outbox db test payload", approvalOutboxEntity.getPayload());
         assertEquals(sagaStatus, approvalOutboxEntity.getSagaStatus());
