@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -30,8 +30,7 @@ class PaymentMessagingMapperTest {
     private static final OrderId TEST_ORDER_ID = new OrderId(UUID.fromString("ac9ff3b1-5d70-4202-97a2-cb25030f9f3a"));
     private static final Money TEST_PRICE = new Money(new BigDecimal("25.45"));
     private static final UUID TEST_SAGA_ID = UUID.fromString("ad128995-5624-4556-af9d-bbc3262b93f7");
-    private static final ZoneId UTC = ZoneId.of("UTC");
-    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 11, 5, 8, 45, 21, 0, UTC);
+    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 11, 5, 8, 45, 21, 0, ZoneOffset.UTC);
 
     private final PaymentMessagingMapper paymentMessagingMapper = Mappers.getMapper(PaymentMessagingMapper.class);
 
@@ -80,7 +79,7 @@ class PaymentMessagingMapperTest {
         assertEquals(orderEventPayload.getCustomerId(), paymentResponse.getCustomerId());
         assertEquals(orderEventPayload.getOrderId(), paymentResponse.getOrderId());
         assertEquals(orderEventPayload.getPrice(), paymentResponse.getPrice());
-        assertEquals(orderEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(paymentResponse.getCreatedAt(), UTC));
+        assertEquals(orderEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(paymentResponse.getCreatedAt(), ZoneOffset.UTC));
         assertEquals(orderEventPayload.getPaymentStatus(), paymentResponse.getPaymentStatus().toString());
         assertThat(paymentResponse.getFailureMessages()).containsAll(orderEventPayload.getFailureMessages());
     }
