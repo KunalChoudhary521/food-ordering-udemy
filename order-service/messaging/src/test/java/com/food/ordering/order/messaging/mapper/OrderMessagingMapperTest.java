@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -37,9 +37,8 @@ class OrderMessagingMapperTest {
     private static final UUID TEST_COMPLETED_PAYMENT_ID = UUID.fromString("96eb41ab-b4c7-4713-9394-34e3b031df60");
     private static final UUID TEST_PAYMENT_RESPONSE_EVENT_ID = UUID.fromString("bcb4a9ad-3590-4443-926b-49761ce34593");
     private static final UUID TEST_RESTAURANT_APPROVAL_RESPONSE_EVENT_ID = UUID.fromString("0fe1b3cf-20a3-458b-b2b7-17ef52fdca25");
-    public static final Money TEST_PRICE = new Money(new BigDecimal("17.49"));
-    private static final ZoneId UTC = ZoneId.of("UTC");
-    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 11, 5, 8, 45, 21, 0, UTC);
+    private static final Money TEST_PRICE = new Money(new BigDecimal("17.49"));
+    private static final ZonedDateTime TEST_ZONE_DATE_TIME = ZonedDateTime.of(2023, 11, 5, 8, 45, 21, 0, ZoneOffset.UTC);
 
     private final OrderMessagingMapper orderMessagingMapper = Mappers.getMapper(OrderMessagingMapper.class);
 
@@ -115,7 +114,7 @@ class OrderMessagingMapperTest {
         assertEquals(orderPaymentEventPayload.getCustomerId(), paymentRequest.getCustomerId());
         assertEquals(orderPaymentEventPayload.getPrice(), paymentRequest.getPrice());
         assertEquals(orderPaymentEventPayload.getPaymentOrderStatus(), paymentRequest.getPaymentOrderStatus().toString());
-        assertEquals(orderPaymentEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(paymentRequest.getCreatedAt(), UTC));
+        assertEquals(orderPaymentEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(paymentRequest.getCreatedAt(), ZoneOffset.UTC));
     }
 
     @Test
@@ -146,7 +145,7 @@ class OrderMessagingMapperTest {
         assertEquals(orderApprovalEventPayload.getProducts().get(1).getQuantity(), restaurantApprovalRequest.getProducts().get(1).getQuantity());
 
         assertEquals(orderApprovalEventPayload.getPrice(), restaurantApprovalRequest.getPrice());
-        assertEquals(orderApprovalEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(restaurantApprovalRequest.getCreatedAt(), UTC));
+        assertEquals(orderApprovalEventPayload.getCreatedAt(), ZonedDateTime.ofInstant(restaurantApprovalRequest.getCreatedAt(), ZoneOffset.UTC));
     }
 
     private List<OrderApprovalEventProduct> createOrderApprovalEventProduct() {
